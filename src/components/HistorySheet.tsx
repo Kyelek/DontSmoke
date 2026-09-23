@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { Alert, Modal, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -14,7 +14,7 @@ interface Props {
   onResetAll: () => void;
 }
 
-export default function HistorySheet({ visible, entries, onClose, onDelete, onResetAll }: Props) {
+function HistorySheet({ visible, entries, onClose, onDelete, onResetAll }: Props) {
   const insets = useSafeAreaInsets();
 
   const sections = useMemo(() => {
@@ -107,6 +107,8 @@ export default function HistorySheet({ visible, entries, onClose, onDelete, onRe
     </Modal>
   );
 }
+
+export default memo(HistorySheet);
 
 const styles = StyleSheet.create({
   backdrop: {
