@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native';
 
 import { colors } from '../theme';
@@ -15,7 +15,7 @@ const FILTER_WIDTH = 72;
 const TIP_WIDTH = 16;
 
 /** Cigarro dibujado con Views: filtro, papel, ceniza y brasa encendida. */
-export default function CigaretteButton({ onPress, puffKey }: Props) {
+function CigaretteButton({ onPress, puffKey }: Props) {
   const scale = useRef(new Animated.Value(1)).current;
   const glow = useRef(new Animated.Value(0)).current;
   const puff = useRef(new Animated.Value(0)).current;
@@ -78,6 +78,8 @@ export default function CigaretteButton({ onPress, puffKey }: Props) {
     </Pressable>
   );
 }
+
+export default memo(CigaretteButton);
 
 const PUFFS = [
   { x: 0, size: 18, delay: 0 },

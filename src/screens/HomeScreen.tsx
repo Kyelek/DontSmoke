@@ -1,8 +1,9 @@
 import * as Haptics from 'expo-haptics';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import AdBanner from '../ads/AdBanner';
 import CigaretteButton from '../components/CigaretteButton';
 import ElapsedTimer from '../components/ElapsedTimer';
 import HistorySheet from '../components/HistorySheet';
@@ -15,10 +16,27 @@ import { currentMessage } from '../utils/motivation';
 import { countToday, elapsedSince } from '../utils/time';
 
 export default function HomeScreen() {
-  const { entries, lastEntry, loading, logCigarette, deleteEntry } = useCigaretteLog();
+  const { entries, lastEntry, loading, logCigarette, deleteEntry, resetAll } = useCigaretteLog();
   const now = useNow();
   const [historyOpen, setHistoryOpen] = useState(false);
   const [puffKey, setPuffKey] = useState(0);
+
+  // Callbacks estables: la pantalla se re-renderiza cada segundo por el
+  // contador y así el cigarro y el historial no se re-renderizan con ella.
+  const openHistory = useCallback(() => setHistoryOpen(true), []);
+  const closeHistory = useCallback(() => setHistoryOpen(false), []);
+
+  const handleLog = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => undefined);
+    setPuffKey((k) => k + 1);
+    logCigarette();
+  }, [logCigarette]);
+
+  const handleResetAll = useCallback(() => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => undefined);
+    resetAll();
+    setHistoryOpen(false);
+  }, [resetAll]);
 
   if (loading) {
     return (
@@ -31,19 +49,13 @@ export default function HomeScreen() {
   const elapsed = lastEntry ? elapsedSince(lastEntry.smokedAt, now) : null;
   const message = currentMessage(elapsed, lastEntry?.smokedAt);
 
-  const handleLog = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => undefined);
-    setPuffKey((k) => k + 1);
-    logCigarette();
-  };
-
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.brand}>No Smoking</Text>
           <Pressable
-            onPress={() => setHistoryOpen(true)}
+            onPress={openHistory}
             accessibilityRole="button"
             accessibilityLabel="Abrir historial"
             hitSlop={8}
@@ -68,16 +80,19 @@ export default function HomeScreen() {
         />
 
         <View style={styles.stats}>
-          <StatCard label="Hoy" value={countToday(entries, now)} onPress={() => setHistoryOpen(true)} />
-          <StatCard label="Total" value={entries.length} onPress={() => setHistoryOpen(true)} />
+          <StatCard label="Hoy" value={countToday(entries, now)} onPress={openHistory} />
+          <StatCard label="Total" value={entries.length} onPress={openHistory} />
         </View>
       </ScrollView>
+
+      <AdBanner />
 
       <HistorySheet
         visible={historyOpen}
         entries={entries}
-        onClose={() => setHistoryOpen(false)}
+        onClose={closeHistory}
         onDelete={deleteEntry}
+        onResetAll={handleResetAll}
       />
     </SafeAreaView>
   );

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { Alert, Modal, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,9 +11,10 @@ interface Props {
   entries: CigaretteEntry[];
   onClose: () => void;
   onDelete: (id: string) => void;
+  onResetAll: () => void;
 }
 
-export default function HistorySheet({ visible, entries, onClose, onDelete }: Props) {
+function HistorySheet({ visible, entries, onClose, onDelete, onResetAll }: Props) {
   const insets = useSafeAreaInsets();
 
   const sections = useMemo(() => {
@@ -30,6 +31,16 @@ export default function HistorySheet({ visible, entries, onClose, onDelete }: Pr
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Eliminar', style: 'destructive', onPress: () => onDelete(entry.id) },
     ]);
+
+  const confirmReset = () =>
+    Alert.alert(
+      'Reiniciar todo',
+      `Se borrarán los ${entries.length} registros y todos los contadores volverán a cero. Esta acción no se puede deshacer.`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Borrar todo', style: 'destructive', onPress: onResetAll },
+      ],
+    );
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
@@ -54,7 +65,18 @@ export default function HistorySheet({ visible, entries, onClose, onDelete }: Pr
             }
             ListFooterComponent={
               entries.length > 0 ? (
-                <Text style={styles.hint}>Mantén pulsado un registro para eliminarlo.</Text>
+                <View style={styles.footer}>
+                  <Text style={styles.hint}>Mantén pulsado un registro para eliminarlo.</Text>
+                  <Pressable
+                    onPress={confirmReset}
+                    accessibilityRole="button"
+                    accessibilityLabel="Reiniciar todo"
+                    accessibilityHint="Borra todos los registros y pone los contadores a cero"
+                    style={({ pressed }) => [styles.resetButton, pressed && styles.resetButtonPressed]}
+                  >
+                    <Text style={styles.resetText}>Reiniciar todo</Text>
+                  </Pressable>
+                </View>
               ) : null
             }
             renderSectionHeader={({ section }) => (
@@ -85,6 +107,8 @@ export default function HistorySheet({ visible, entries, onClose, onDelete }: Pr
     </Modal>
   );
 }
+
+export default memo(HistorySheet);
 
 const styles = StyleSheet.create({
   backdrop: {
@@ -173,10 +197,30 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: spacing.xl,
   },
+  footer: {
+    marginTop: spacing.lg,
+    gap: spacing.lg,
+    alignItems: 'center',
+  },
   hint: {
     ...typography.caption,
     color: colors.textMuted,
     textAlign: 'center',
-    marginTop: spacing.lg,
+  },
+  resetButton: {
+    paddingVertical: spacing.sm + 2,
+    paddingHorizontal: spacing.lg,
+    borderRadius: radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.danger,
+  },
+  resetButtonPressed: {
+    backgroundColor: colors.surfaceElevated,
+  },
+  resetText: {
+    ...typography.caption,
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.danger,
   },
 });
