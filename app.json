@@ -1,26 +1,61 @@
 {
   "expo": {
-    "name": "No Smoking",
-    "slug": "no-smoking",
+    "name": "Dejar De Fumar Fácil",
+    "slug": "dejar-de-fumar-facil",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kyelek.dontsmoke",
+      "buildNumber": "1"
     },
     "android": {
+      "package": "com.kyelek.dontsmoke",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#121417",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.VIBRATE",
+        "com.google.android.gms.permission.AD_ID"
+      ],
+      "blockedPermissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "backgroundColor": "#121417"
+    "backgroundColor": "#121417",
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#121417"
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-4212330586183500~4572004049",
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511",
+          "delayAppMeasurementInit": true
+        }
+      ]
+    ],
+    "description": "Registra cada cigarro, mira cuánto tiempo llevas sin fumar y recibe mensajes de apoyo."
   }
 }

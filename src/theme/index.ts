@@ -19,6 +19,16 @@ export const colors = {
 
   warning: '#D9B97A',
   danger: '#D98C8C',
+  support: '#C9A8D9',
+
+  // Ilustración del cigarro
+  paper: '#ECE8E0',
+  filter: '#C08A5B',
+  filterBand: '#A8744A',
+  ash: '#8A8580',
+  ashDark: '#4A4644',
+  ember: '#E07A4F',
+  smoke: '#B8BCC2',
 } as const;
 
 export const spacing = {
