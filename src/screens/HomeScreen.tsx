@@ -53,7 +53,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.brand}>No Smoking</Text>
+          <Text style={styles.brand}>Dejar De Fumar Fácil</Text>
           <Pressable
             onPress={openHistory}
             accessibilityRole="button"
