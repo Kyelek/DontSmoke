@@ -15,7 +15,7 @@ import { currentMessage } from '../utils/motivation';
 import { countToday, elapsedSince } from '../utils/time';
 
 export default function HomeScreen() {
-  const { entries, lastEntry, loading, logCigarette, deleteEntry } = useCigaretteLog();
+  const { entries, lastEntry, loading, logCigarette, deleteEntry, resetAll } = useCigaretteLog();
   const now = useNow();
   const [historyOpen, setHistoryOpen] = useState(false);
   const [puffKey, setPuffKey] = useState(0);
@@ -78,6 +78,11 @@ export default function HomeScreen() {
         entries={entries}
         onClose={() => setHistoryOpen(false)}
         onDelete={deleteEntry}
+        onResetAll={() => {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => undefined);
+          resetAll();
+          setHistoryOpen(false);
+        }}
       />
     </SafeAreaView>
   );

@@ -39,6 +39,13 @@ export function useCigaretteLog() {
     setSettings(await repo.updateSettings(patch));
   }, []);
 
+  /** Borra todos los registros y ajustes guardados y deja la app a cero. */
+  const resetAll = useCallback(async () => {
+    await repo.clearAll();
+    setEntries([]);
+    setSettings(repo.DEFAULT_SETTINGS);
+  }, []);
+
   return {
     entries,
     settings,
@@ -47,6 +54,7 @@ export function useCigaretteLog() {
     logCigarette,
     deleteEntry,
     saveSettings,
+    resetAll,
     reload,
   };
 }
