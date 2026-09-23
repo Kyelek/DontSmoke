@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "No Smoking",
-    "slug": "no-smoking",
+    "name": "Dejar De Fumar Fácil",
+    "slug": "dejar-de-fumar-facil",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -50,7 +50,7 @@
       [
         "react-native-google-mobile-ads",
         {
-          "androidAppId": "ca-app-pub-3940256099942544~3347511713",
+          "androidAppId": "ca-app-pub-4212330586183500~4572004049",
           "iosAppId": "ca-app-pub-3940256099942544~1458002511",
           "delayAppMeasurementInit": true
         }

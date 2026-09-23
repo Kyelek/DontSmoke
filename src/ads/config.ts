@@ -1,17 +1,19 @@
 import Constants, { ExecutionEnvironment } from 'expo-constants';
 
 /**
- * IDs reales de AdMob. Mientras sean null se usan los IDs de prueba de
- * Google, que muestran anuncios de ejemplo y no generan ingresos.
- *
- * Antes de publicar: sustituye este valor por el ID del bloque de anuncios
- * (formato ca-app-pub-XXXXXXXXXXXXXXXX/NNNNNNNNNN) y el `androidAppId` del
- * plugin en app.json por el ID de la app (formato ...~NNNNNNNNNN).
+ * ID del bloque de anuncios (banner) de AdMob. El ID de la app va en el
+ * plugin `react-native-google-mobile-ads` de app.json.
  */
-export const ADMOB_BANNER_UNIT_ID_ANDROID: string | null = null;
+export const ADMOB_BANNER_UNIT_ID_ANDROID: string | null = 'ca-app-pub-4212330586183500/1642588373';
 
 /** Expo Go no incluye el SDK nativo de anuncios. */
 export const adsSupported = Constants.executionEnvironment !== ExecutionEnvironment.StoreClient;
 
-/** En desarrollo siempre se usan anuncios de prueba (Google lo exige). */
-export const USE_TEST_ADS = __DEV__ || ADMOB_BANNER_UNIT_ID_ANDROID == null;
+/**
+ * Anuncios de prueba en desarrollo y en las builds de prueba (perfil
+ * `preview` de eas.json, que define EXPO_PUBLIC_ADS_TEST=1). Ver o pulsar
+ * anuncios reales de tu propia app puede suponer la suspensión de la cuenta
+ * de AdMob; solo la build `production` usa el ID real.
+ */
+export const USE_TEST_ADS =
+  __DEV__ || process.env.EXPO_PUBLIC_ADS_TEST === '1' || ADMOB_BANNER_UNIT_ID_ANDROID == null;
