@@ -56,6 +56,16 @@
         }
       ]
     ],
-    "description": "Registra cada cigarro, mira cuánto tiempo llevas sin fumar y recibe mensajes de apoyo."
+    "description": "Registra cada cigarro, mira cuánto tiempo llevas sin fumar y recibe mensajes de apoyo.",
+    "extra": {
+      "eas": {
+        "projectId": "23aca777-0d11-45a7-997f-4e8cd46412fb"
+      }
+    }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-4212330586183500~4572004049",
+    "ios_app_id": "ca-app-pub-3940256099942544~1458002511",
+    "delay_app_measurement_init": true
   }
 }
